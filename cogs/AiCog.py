@@ -6,6 +6,7 @@ import os
 import json
 import time
 class AIcog(commands.Cog):
+    #Fist comit
     def __init__(self,client):
         # Token
         load_dotenv()
