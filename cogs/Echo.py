@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 class Echo(commands.Cog):
-    #Fist comit
+    #echo
     def __init__(self,client):
 
         self.client = client
