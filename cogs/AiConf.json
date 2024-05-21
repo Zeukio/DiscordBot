@@ -1,0 +1,25 @@
+{
+   "AUDIO":{
+      "FileFormats":[
+         ".mp3",
+         ".ogg",
+         ".opus",
+         ".wav"
+      ],
+      "Prompt":"Apenas Trancreva o audio!"
+   },
+   "VIDEO":{
+      "FileFormats":[
+         ".mp4",
+         ".avi"
+      ],
+      "Prompt":"descreva o que o video mostra"
+   },
+   "IMAGE":{
+      "FileFormats":[
+         ".jpg",
+         ".png"
+      ],
+      "Prompt":",descreva a imagem em portugues "
+   }
+}
