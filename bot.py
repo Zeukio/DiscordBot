@@ -1,10 +1,13 @@
+import sys
+sys.path.append("./cogs")
+from inspect import getmembers, isfunction
 import discord
 from discord.ext import commands
-import responses
 from dotenv import load_dotenv
 import os
 from typing import Final
 import time
+
 import CustomHelp
 
 
@@ -30,7 +33,8 @@ def run_discrod_bot():
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
                 print(f'{filename}')
-                await client.load_extension(f'cogs.{filename[:-3]}')
+                if filename[:-3] != "__init__":
+                    await client.load_extension(f'cogs.{filename[:-3]}')
 
 
     @client.command(help="Load Cog")
@@ -53,6 +57,34 @@ def run_discrod_bot():
             time.sleep(5)
             await client.load_extension(f'cogs.{extension}')
             await ctx.send(f'{extension} finish update')
+
+    @client.command(help="Download cog")
+    async def downloadcog(ctx):
+        if '284146826196549633' == str(ctx.message.author.id):
+            if len(ctx.message.attachments) > 0:
+                ctx.send(f' new cog ... ')
+                for attachment in ctx.message.attachments:
+                    if ".py" in attachment.filename:
+                        fl = attachment.filename[:-3]
+                        await ctx.send(f'{attachment.filename} download ... ')
+                        await attachment.save(f'./cogs/{attachment.filename}')
+                        await ctx.send(f'{attachment.filename} downloaded ... ')
+                        newmodule = __import__(fl)
+                        functionsinnewmodule = getmembers(newmodule, isfunction)
+                        funcnames = []
+                        for func in functionsinnewmodule:
+                            funcnames.append(str(func[0]))
+
+                        if "setup" in funcnames:
+                            await ctx.send(funcnames)
+                        else:
+                            await ctx.send(funcnames)
+                            await ctx.send("error in module... it will be deleted")
+                            os.remove(f'./cogs/{attachment.filename}')
+
+
+
+
 
     @client.command(help="List all Cogs")
     async def coglist(ctx):

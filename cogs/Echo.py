@@ -7,7 +7,6 @@ class Echo(commands.Cog):
         self.client = client
     @commands.command()
     async def echo(self, ctx):
-        ctx.send('Echo test')
-
+        await ctx.send('Echo test')
 async def setup(client):
     await client.add_cog(Echo(client))
