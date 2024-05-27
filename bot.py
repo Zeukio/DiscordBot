@@ -18,13 +18,11 @@ def run_discrod_bot():
     #loaf tonkens
     load_dotenv()
     TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
-
-
     #setup discord bot
     intents = discord.Intents.default()
     intents.message_content = True  # NOQA
     client = commands.Bot(command_prefix = '.' ,intents = intents ) #, help_command= CustomHelp.CustomHelpCommand())
-
+    SysMaster = os.getenv('MASTER_USER')
 
     #events
     @client.event
@@ -39,19 +37,19 @@ def run_discrod_bot():
 
     @client.command(help="Load Cog")
     async def load(ctx,extension):
-        if '284146826196549633' == str(ctx.message.author.id):
+        if SysMaster == str(ctx.message.author.id):
             await client.load_extension(f'cogs.{extension}')
             await ctx.send(f'{extension} load')
 
     @client.command(help="Unload Cog")
     async def unload(ctx, extension):
-        if '284146826196549633' == str(ctx.message.author.id):
+        if SysMaster == str(ctx.message.author.id):
             await client.unload_extension(f'cogs.{extension}')
             await ctx.send(f'{extension} unload')
 
     @client.command(help="Update Cog")
     async def updatecog(ctx, extension):
-        if '284146826196549633' == str(ctx.message.author.id):
+        if SysMaster == str(ctx.message.author.id):
             await ctx.send(f'{extension} start update ... ')
             await client.unload_extension(f'cogs.{extension}')
             time.sleep(5)
@@ -60,7 +58,7 @@ def run_discrod_bot():
 
     @client.command(help="Download cog")
     async def downloadcog(ctx):
-        if '284146826196549633' == str(ctx.message.author.id):
+        if SysMaster == str(ctx.message.author.id):
             if len(ctx.message.attachments) > 0:
                 ctx.send(f' new cog ... ')
                 for attachment in ctx.message.attachments:
@@ -88,7 +86,7 @@ def run_discrod_bot():
 
     @client.command(help="List all Cogs")
     async def coglist(ctx):
-        if '284146826196549633' == str(ctx.message.author.id):
+        if SysMaster == str(ctx.message.author.id):
             for filename in os.listdir('./cogs'):
                 if filename.endswith('.py'):
                     await ctx.send(f'{filename}')
@@ -97,7 +95,12 @@ def run_discrod_bot():
     async def private(ctx):
         await ctx.author.send(f'Hello! {ctx.message.author.name}')
 
-
+    @client.command()
+    async def clear(ctx, amount=100):
+        dmchannel = ctx.channel # dm channel you want to clear
+        async for message in dmchannel.history(limit=amount):
+            if message.author == client.user:  # client.user or bot.user according to what you have named it
+                await message.delete()
 
 
     client.run(TOKEN)
